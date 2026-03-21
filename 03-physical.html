@@ -130,6 +130,38 @@
 
     <p>Nuclear deterrence remains the ultimate guarantor of sovereignty for nodes that possess it, and the most significant security gap for nodes that do not. The framework acknowledges this reality without prescribing a universal solution.</p>
 
+    <h2>Silicon Sovereignty — The <em>Hardware Root of Trust</em></h2>
+
+    <p>The system model defined in Chapter 11 requires "attested hardware" — physical computing infrastructure whose behavior can be cryptographically verified, whose supply chain is known, and whose operation cannot be remotely disabled by a foreign actor. This requirement, architecturally sound, rests on a dependency the physical layer has not yet addressed: the global semiconductor supply chain is one of the most centralized dependencies in existence, and it runs through jurisdictions that are either geopolitically fragile or subject to foreign legal pressure.</p>
+
+    <p>Taiwan Semiconductor Manufacturing Company produces the majority of the world's leading-edge logic chips. ASML, a Dutch company subject to Netherlands and US export control policy, produces every extreme ultraviolet lithography system used to manufacture chips below approximately seven nanometers. A sovereign node that builds its enforcement infrastructure on hardware manufactured through this supply chain has a kill switch embedded in its physical layer — one that no policy authority or cryptographic threshold can override.</p>
+
+    <div class="callout accent">
+      <div class="callout-label">The 22nm Sufficiency Argument</div>
+      <p>Sovereign governance computing does not require cutting-edge process nodes. Policy evaluation, identity management, cryptographic signing, and audit logging are computationally modest operations. A system designed specifically to run the sovereign enforcement primitives can operate effectively on hardware producible at 22nm — a process node achievable without extreme ultraviolet lithography, and therefore without ASML dependency. The design constraint is not "sovereign nodes must fabricate their own leading-edge chips." It is: "the critical enforcement path must run on hardware producible within the sovereign boundary or within a sufficiently diversified supply chain that no single actor holds veto power."</p>
+    </div>
+
+    <h3>The Open Silicon Path</h3>
+
+    <p><strong>RISC-V as the sovereign instruction set architecture.</strong> RISC-V is an open, royalty-free processor architecture not controlled by any corporation or government. A processor implementing RISC-V can be designed, verified, and fabricated without licensing agreements with foreign IP holders. The architecture has been adopted by India's national semiconductor initiative, the European Processor Initiative, and hundreds of commercial and research implementations. It is the natural foundation for sovereign computing hardware.</p>
+
+    <p><strong>Open-source chip toolchains.</strong> The OpenROAD project and SkyWater SKY130 process design kit provide a fully open-source chip design flow — from RTL specification to manufacturable GDSII layout — that any actor can inspect, audit, and compile. A sovereign node can design, verify, and tape out a processor intended for sovereign governance computing using entirely open tools, producing a design with no proprietary IP obscuring its behavior. This is the hardware equivalent of open-source software: not freedom from fabrication constraints, but freedom from hidden functional dependencies in the design itself.</p>
+
+    <p><strong>22nm fabrication without EUV.</strong> Several national semiconductor initiatives and contract fabs operate at 28nm and 22nm process nodes using deep ultraviolet lithography — technology not subject to the same export control regime as EUV. These fabs include facilities in the European Union, India, Japan, and the United States, and emerging programs in the Middle East and Southeast Asia. Sovereign enforcement hardware designed for 22nm can be fabricated across a geographically distributed set of fabs, none of which individually controls a kill switch.</p>
+
+    <h3>The Multi-Node Silicon Strategy</h3>
+
+    <p>Full domestic silicon fabrication is achievable but measured in decades, not years. The transition strategy for the physical layer's hardware dimension follows the same logic as energy sovereignty: the goal is not autarky but resilience. No single external actor should control supply of any component critical to the enforcement infrastructure.</p>
+
+    <p>During the building phase: qualify enforcement hardware designs for multiple fabs across multiple jurisdictions. Maintain strategic stockpiles of hardware for critical enforcement systems sufficient to sustain operations through any foreseeable supply disruption. Participate in multi-node semiconductor cooperation — sharing the cost of open-source chip design and process development across the sovereign network — so that no individual node bears the full burden of hardware independence.</p>
+
+    <p>Long-term: the network of sovereign nodes, cooperating on silicon development, constitutes a demand base that can support dedicated sovereign fabrication capacity. A coalition of nodes collectively purchasing equivalent volume to a major commercial customer can negotiate terms — and eventually co-invest in fabrication infrastructure — that individual nodes cannot achieve alone. The mineral commons governance described above applies equally to silicon: the network is the solution that the individual node cannot be.</p>
+
+    <div class="callout">
+      <div class="callout-label">What This Means for Chapter 11</div>
+      <p>The "attested hardware" requirement in the system model is a dependency that must be actively resolved, not assumed as given. Every sovereign node building toward the enforcement architecture described in Chapter 11 must simultaneously maintain a silicon independence roadmap: what hardware is the enforcement system running on today, what is the supply chain for that hardware, and what is the path to qualifying alternative sources? Without this roadmap, "attested hardware" is a requirement whose attestation chain terminates in a foreign supply chain — which is to say, it terminates outside sovereignty's reach.</p>
+    </div>
+
     <div class="chapter-nav">
       <a href="02-stack.html">
         <div class="nav-dir">← Previous</div>
