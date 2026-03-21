@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 11 — The System Model | The Sovereign Stack</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .primitive-block {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: var(--s4) var(--s5);
+      margin: var(--s4) 0;
+    }
+    .primitive-block .primitive-name {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--s2);
+    }
+    .primitive-block .primitive-schema {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--fg);
+      line-height: 1.8;
+      background: var(--bg-dark);
+      color: #E8E2D8;
+      padding: var(--s3) var(--s4);
+      border-radius: 4px;
+      margin: var(--s2) 0 var(--s3);
+      overflow-x: auto;
+    }
+    .primitive-block p {
+      font-size: 0.88rem;
+      color: var(--fg-mid);
+      margin-bottom: 0;
+    }
+    .flow-diagram {
+      margin: var(--s6) 0;
+    }
+    .flow-step {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 2px;
+    }
+    .flow-step .step-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--fg-light);
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-right: none;
+      background: var(--bg-alt);
+    }
+    .flow-step .step-action {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--fg);
+      padding: var(--s3) var(--s4);
+      border: 1px solid var(--border);
+      border-right: none;
+      min-width: 220px;
+      display: flex;
+      align-items: center;
+    }
+    .flow-step .step-layer {
+      font-size: 0.78rem;
+      color: var(--fg-mid);
+      padding: var(--s3) var(--s4);
+      border: 1px solid var(--border);
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    .flow-step .step-enforcement {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: var(--s3) var(--s4);
+      border: 1px solid var(--border);
+      border-left: none;
+      min-width: 160px;
+      display: flex;
+      align-items: center;
+    }
+    .flow-header {
+      display: flex;
+      margin-bottom: var(--s2);
+    }
+    .flow-header span {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-light);
+    }
+    .flow-header span:nth-child(1) { min-width: 44px; text-align: center; }
+    .flow-header span:nth-child(2) { min-width: 220px; padding-left: var(--s4); }
+    .flow-header span:nth-child(3) { flex: 1; padding-left: var(--s4); }
+    .flow-header span:nth-child(4) { min-width: 160px; padding-left: var(--s4); }
+    .system-layer-map {
+      margin: var(--s5) 0;
+    }
+    .sys-layer {
+      display: grid;
+      grid-template-columns: 180px 1fr 180px;
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2px;
+    }
+    .sys-layer > div {
+      background: var(--bg);
+      padding: var(--s3) var(--s4);
+      font-size: 0.85rem;
+    }
+    .sys-layer .sl-name {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: var(--fg);
+    }
+    .sys-layer .sl-desc {
+      color: var(--fg-mid);
+      font-size: 0.82rem;
+    }
+    .sys-layer .sl-map {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--s5) 0;
+      font-size: 0.85rem;
+    }
+    .comparison-table th {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-light);
+      text-align: left;
+      padding: var(--s2) var(--s3);
+      border-bottom: 2px solid var(--border);
+    }
+    .comparison-table td {
+      padding: var(--s3);
+      border-bottom: 1px solid var(--border-lt);
+      color: var(--fg-mid);
+      vertical-align: top;
+    }
+    .comparison-table td:first-child {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: var(--fg);
+      white-space: nowrap;
+    }
+    .comparison-table td.gap {
+      color: var(--accent);
+    }
+    @media (max-width: 768px) {
+      .flow-step, .flow-header { display: none; }
+      .sys-layer { grid-template-columns: 1fr; }
+      .comparison-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">The Sovereign <span>Stack</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="01-problem.html">The Problem</a></li>
+      <li><a href="02-stack.html">The Stack</a></li>
+      <li><a href="03-physical.html">Physical Layer</a></li>
+      <li><a href="04-institutional.html">Institutional Layer</a></li>
+      <li><a href="05-cognitive.html">Cognitive Layer</a></li>
+      <li><a href="06-knowledge.html">Knowledge &amp; Data</a></li>
+      <li><a href="07-geopolitics.html">Geopolitics</a></li>
+      <li><a href="08-threats.html">Threats</a></li>
+      <li><a href="09-telos.html">The Telos</a></li>
+      <li><a href="10-implementation.html">Implementation</a></li>
+      <li><a href="11-system-model.html" class="active">System Model</a></li>
+      <li><a href="12-financial.html">Financial Layer</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <span class="chapter-num">Chapter 11</span>
+  <h1>The System Model — <em>Primitives &amp; Enforcement</em></h1>
+  <p class="subtitle">Sovereignty as an architectural property requires enforcement points, not just policy declarations. This chapter defines the hard primitives, system layers, and request lifecycle that transform the framework from a meta-model into a reference architecture.</p>
+</header>
+
+<section class="content">
+  <div class="prose">
+
+    <p class="lead">The preceding chapters describe what sovereignty means at each layer. This chapter describes how it is enforced. The distinction is the difference between a constitution that declares rights and a court system that protects them. Declarations without enforcement are philosophy. Enforcement without declaration is arbitrary power. The sovereign system requires both — and this chapter specifies the enforcement half.</p>
+
+    <h2>From Meta-Model to <em>Reference Architecture</em></h2>
+
+    <p>Every previous chapter described sovereignty in terms of layers: physical, institutional, cognitive, knowledge, geopolitical. These are the right categories. But categories are not systems. A system requires:</p>
+
+    <p><strong>Primitives</strong> — the irreducible data types everything else is built from. If you cannot define sovereignty in five or fewer primitives, you have not understood it.</p>
+
+    <p><strong>Enforcement points</strong> — the specific locations in the system where control is actually exercised. Sovereignty does not live in documents. It lives in the places where requests are allowed or denied.</p>
+
+    <p><strong>A request lifecycle</strong> — the complete sequence from input to output, with every step mapped to an enforcement point and every enforcement point mapped to a framework layer. Without this, you cannot answer: what happens when someone tries to do something they are not authorized to do?</p>
+
+    <div class="callout accent">
+      <div class="callout-label">The Diagnostic Test</div>
+      <p>If you cannot point to a specific place in the system where a particular policy is enforced — not where it is declared, not where it is documented, but where it is <em>executed</em> — that policy does not exist in the system. It exists only in the documentation of the system. Governance is a runtime property, not a design-time property.</p>
+    </div>
+
+    <h2>The Five Hard <em>Primitives</em></h2>
+
+    <p>Every operation in a sovereign system reduces to combinations of five primitives. These are not implementation choices — they are logical necessities. Any system that cannot express itself in these terms is either incomplete or not actually a system.</p>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Primitive 01 — Identity</div>
+      <div class="primitive-schema">Identity {
+  id:         string           // globally unique, immutable
+  pubkey:     bytes            // hardware-bound signing key
+  claims:     Claim[]          // verifiable credentials: citizenship, role, clearance
+  lifecycle:  { issued, expires, revoked_at, successor }
+}</div>
+      <p>Identity is not a username. It is a cryptographic binding between a real actor and a verifiable set of claims. Every action in the system is attributed to an Identity. An Identity whose lifecycle has expired or been revoked cannot initiate actions. Identity without a hardware-bound key is spoofable; spoofable identity is not identity.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Primitive 02 — Resource</div>
+      <div class="primitive-schema">Resource {
+  id:             string        // globally unique
+  type:           enum          // dataset | model | pipeline | infrastructure | key
+  owner:          Identity      // who controls access policy
+  classification: enum          // public | restricted | sovereign | classified
+  lineage:        Resource[]    // what this resource was derived from
+}</div>
+      <p>A Resource is anything the system must protect. Energy infrastructure, financial rails, training datasets, model weights, cryptographic keys — all are Resources. Lineage is critical: a model trained on a classified dataset inherits its classification. A pipeline that processes restricted data cannot produce public outputs without explicit declassification policy.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Primitive 03 — Policy</div>
+      <div class="primitive-schema">Policy {
+  subject:    Identity | Role | Group
+  action:     enum              // read | write | execute | delegate | admin
+  resource:   Resource | Classification | Type
+  condition:  Context → boolean // time, location, quorum, threshold
+  effect:     allow | deny | audit | require_mpc
+}</div>
+      <p>Policy is the formalization of governance. It is not a document — it is a function. Given a subject, an action, a resource, and the current context, the policy evaluator returns a decision. Policies are versioned, audited, and themselves governed by higher-order policies. The governance of governance is where sovereignty is most fragile and most important.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Primitive 04 — Execution Context</div>
+      <div class="primitive-schema">ExecutionContext {
+  request_id:   string         // globally unique, unforgeable
+  initiator:    Identity       // who originated the request
+  provenance:   AuditEntry[]   // full chain of prior actions that led here
+  environment:  { node, hardware, attestation, timestamp }
+  constraints:  Policy[]       // policies active at time of execution
+}</div>
+      <p>Every computation in the system runs inside an Execution Context. The context carries provenance: the complete chain of actions that produced the current state. A computation whose context cannot be verified was not authorized. A computation whose environment cannot be attested may have been tampered with. Execution without context is outside the system boundary — which means it is outside sovereignty's reach.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Primitive 05 — Audit Log</div>
+      <div class="primitive-schema">AuditEntry {
+  entry_id:     string         // hash of prior entry + content (chained)
+  timestamp:    uint64         // monotonic, hardware-attested
+  actor:        Identity
+  action:       PolicyDecision
+  resource:     Resource
+  context:      ExecutionContext
+  outcome:      { allowed | denied | escalated }
+}</div>
+      <p>The Audit Log is the sovereign system's memory. It is append-only, cryptographically chained, and publicly verifiable by any citizen. Every access, every denial, every policy change, every key rotation is recorded. An audit log that can be modified by any actor — including system administrators — is not an audit log. It is a narrative controlled by whoever holds write access.</p>
+    </div>
+
+    <h2>The Four Enforcement <em>Points</em></h2>
+
+    <p>Sovereignty does not live in the primitives. It lives in the points where the primitives are evaluated and decisions are made. There are exactly four boundaries where enforcement is meaningful:</p>
+
+    <h3>Ingestion Boundary</h3>
+    <p>The point where external data enters the sovereign system. At ingestion, every incoming artifact — a data file, a model weight, a software package, a message — is evaluated against classification policy, provenance requirements, and integrity checks. Data whose provenance cannot be verified, software whose supply chain is unknown, and content that violates classification boundaries is rejected here. The ingestion boundary is the frontier of sovereignty: anything that passes without inspection is inside the perimeter but outside control.</p>
+
+    <h3>Query Boundary</h3>
+    <p>The point where an Identity requests access to a Resource. Identity is verified, clearance is checked against classification, and the Policy evaluator returns a decision before any data moves. Critically, the query boundary must not merely check whether the action is allowed — it must also check whether the combination of allowed queries reveals information that no single query should reveal. Aggregate access is an attack surface; the query boundary must enforce statistical disclosure controls as a policy primitive, not an afterthought.</p>
+
+    <h3>Pipeline Boundary</h3>
+    <p>The point where a computation is initiated. Every pipeline — a data transformation, a model training run, an analysis job — runs inside an Execution Context. Before execution begins, the pipeline boundary verifies that the initiating Identity has execution rights on the specified Resources, that the hardware environment is attested, and that the lineage of input Resources is consistent with the requested output classification. A pipeline that consumes classified inputs cannot produce public outputs without an explicit, audited declassification decision by an authorized Identity.</p>
+
+    <h3>Output Boundary</h3>
+    <p>The point where results leave the sovereign system. Outputs are classified by inheriting the classification of their highest-classified input, unless explicitly declassified. Every output leaving the system boundary is logged with the full Execution Context that produced it. Outputs destined for external parties carry the sovereign node's cryptographic signature, establishing provenance and enabling downstream systems to verify that the output has not been tampered with after leaving the boundary.</p>
+
+    <h2>The Request <em>Lifecycle</em></h2>
+
+    <p>Every interaction with the sovereign system follows a single lifecycle. The lifecycle is not a recommendation — it is the system boundary. Any interaction that bypasses any step is outside the system and therefore outside sovereignty's enforcement reach.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-header">
+        <span>#</span>
+        <span>Step</span>
+        <span>Framework Layer</span>
+        <span>Enforcement Point</span>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <div class="step-action">Request arrives</div>
+        <div class="step-layer">Physical — runs on sovereign infrastructure</div>
+        <div class="step-enforcement">Ingestion boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <div class="step-action">Identity resolved</div>
+        <div class="step-layer">Institutional — cryptographic key verification</div>
+        <div class="step-enforcement">Query boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <div class="step-action">Policy evaluated</div>
+        <div class="step-layer">Institutional — policy runtime (OPA-class)</div>
+        <div class="step-enforcement">Query boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <div class="step-action">Resource accessed</div>
+        <div class="step-layer">Knowledge — classified by data layer</div>
+        <div class="step-enforcement">Query boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <div class="step-action">Execution initiated</div>
+        <div class="step-layer">Physical — hardware-attested environment</div>
+        <div class="step-enforcement">Pipeline boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <div class="step-action">Output classified</div>
+        <div class="step-layer">Knowledge — lineage-derived classification</div>
+        <div class="step-enforcement">Output boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">07</div>
+        <div class="step-action">Output filtered</div>
+        <div class="step-layer">Cognitive — semantic coherence check</div>
+        <div class="step-enforcement">Output boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">08</div>
+        <div class="step-action">Audit recorded</div>
+        <div class="step-layer">All layers — append-only, chained, public</div>
+        <div class="step-enforcement">Audit log (always)</div>
+      </div>
+    </div>
+
+    <p>No step can be skipped. A request that reaches Step 5 without having passed Step 3 is a security incident, not a valid execution. The lifecycle is enforced in hardware where possible and in software where hardware is not yet available — but the software enforcement path is always designed for eventual migration to hardware.</p>
+
+    <h2>System Layers vs. <em>Philosophical Layers</em></h2>
+
+    <p>The framework's seven philosophical layers (physical through telos) describe what sovereignty means. The system requires these to be mapped onto executable layers — ones that have APIs, enforcement points, and observable behavior.</p>
+
+    <div class="system-layer-map">
+      <div class="sys-layer">
+        <div class="sl-name">Infrastructure Layer</div>
+        <div class="sl-desc">Compute, storage, networking — physically located within the sovereign boundary, attested hardware, no foreign dependencies in the critical path.</div>
+        <div class="sl-map">→ Physical Sovereignty</div>
+      </div>
+      <div class="sys-layer">
+        <div class="sl-name">Identity Layer</div>
+        <div class="sl-desc">DID-based sovereign identity, hardware-bound keys, verifiable credentials, lifecycle management, revocation registry.</div>
+        <div class="sl-map">→ Institutional Architecture</div>
+      </div>
+      <div class="sys-layer">
+        <div class="sl-name">Policy Layer</div>
+        <div class="sl-desc">Policy-as-code runtime (OPA-class), MPC-enforced for sovereign-classified operations, version-controlled, publicly auditable policy corpus.</div>
+        <div class="sl-map">→ Institutional + Cognitive</div>
+      </div>
+      <div class="sys-layer">
+        <div class="sl-name">Data Layer</div>
+        <div class="sl-desc">Classified resource registry, lineage graph, knowledge commons protocol, data memory archive, statistical disclosure controls.</div>
+        <div class="sl-map">→ Knowledge Commons</div>
+      </div>
+      <div class="sys-layer">
+        <div class="sl-name">Execution Layer</div>
+        <div class="sl-desc">Attested compute environments, pipeline boundary enforcement, provenance-carrying execution contexts, output classification engine.</div>
+        <div class="sl-map">→ All layers in runtime</div>
+      </div>
+    </div>
+
+    <h2>Delta vs. <em>Existing Stacks</em></h2>
+
+    <p>The sovereign system is not built in a vacuum. Existing systems solve adjacent problems. Understanding the delta clarifies what the sovereign system must build versus what it can adopt.</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>System</th>
+          <th>What it solves</th>
+          <th>Why it's insufficient</th>
+          <th class="gap">The gap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Palantir Foundry</td>
+          <td>Data governance, access control, lineage at enterprise scale</td>
+          <td>Proprietary platform; the vendor holds root access; CLOUD Act exposure; you govern your data inside someone else's system</td>
+          <td class="gap">Platform sovereignty — the enforcement layer must itself be sovereign</td>
+        </tr>
+        <tr>
+          <td>Snowflake / cloud DWH</td>
+          <td>Scalable data storage and query with RBAC</td>
+          <td>Foreign cloud infrastructure; data at rest in foreign jurisdiction; vendor dependency in critical path</td>
+          <td class="gap">Infrastructure sovereignty — compute must run on attested hardware within the boundary</td>
+        </tr>
+        <tr>
+          <td>Google Zanzibar</td>
+          <td>Globally consistent, fine-grained authorization at scale</td>
+          <td>Authorization without execution sovereignty; controls who can read data but not where data is computed or what hardware runs it</td>
+          <td class="gap">Execution sovereignty — policy enforcement must extend through the pipeline, not stop at the query</td>
+        </tr>
+        <tr>
+          <td>Self-Sovereign Identity (SSI)</td>
+          <td>User-controlled identity, verifiable credentials, DID standards</td>
+          <td>Identity layer without a policy runtime or enforcement infrastructure; no answer to "what does this identity allow you to do, and who verifies that?"</td>
+          <td class="gap">Enforcement runtime — identity is necessary but insufficient without a policy layer that executes against it</td>
+        </tr>
+        <tr>
+          <td>Open Policy Agent (OPA)</td>
+          <td>Policy-as-code, decoupled from enforcement point, reusable across systems</td>
+          <td>Policy evaluator without a sovereign execution environment; policies run on whatever infrastructure the operator chose; operator can change the policies</td>
+          <td class="gap">Governance of governance — policy changes must themselves require MPC authorization from distributed key holders</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The sovereign system does not replace these tools. It provides the context in which they can operate without introducing foreign dependency into the critical enforcement path. OPA can be the policy runtime. Zanzibar-style authorization can be the query boundary engine. SSI standards can define the identity layer. The sovereign contribution is the architecture that makes these tools' outputs enforceable within a boundary that no external actor can override.</p>
+
+    <div class="callout green">
+      <div class="callout-label">What Cannot Be Solved at the System Layer</div>
+      <p>The system model enforces policies that humans write. It does not write the policies. A captured policy layer — one controlled by an actor who has seized institutional authority — will enforce bad policy perfectly. The system model's defense against policy capture is the same as the framework's defense against institutional capture: distributed key management, multi-party computation, and a cognitively sovereign population capable of detecting when the policies no longer serve them. The system is the tool. The institutional and cognitive layers are what the tool serves.</p>
+    </div>
+
+    <h2>What Makes a System <em>Sovereign</em></h2>
+
+    <p>A system is sovereign over a domain when: (1) it can make and enforce decisions within that domain without requiring permission from any external actor; (2) those decisions are made according to policies set by the population the system serves, not by the system's builders or operators; and (3) the audit log that records every decision is accessible to every citizen and cannot be modified by any actor, including the system's administrators.</p>
+
+    <p>Condition 1 requires infrastructure sovereignty: the enforcement points run on hardware the sovereign node controls. Condition 2 requires institutional sovereignty: policy changes require MPC authorization from distributed key holders. Condition 3 requires audit sovereignty: the log is public, append-only, and cryptographically chained.</p>
+
+    <p>These three conditions are the minimum viable specification for a sovereign system. They are also the three conditions most commonly compromised in systems that describe themselves as sovereign. A system that meets condition 1 but not condition 2 is an autocrat's fortress. A system that meets conditions 1 and 2 but not condition 3 is a governance system without accountability. All three conditions must hold simultaneously.</p>
+
+    <div class="chapter-nav">
+      <a href="10-implementation.html">
+        <div class="nav-dir">← Previous</div>
+        <div class="nav-title">Implementation &amp; Honest Limits</div>
+      </a>
+      <a href="12-financial.html" class="next">
+        <div class="nav-dir">Next →</div>
+        <div class="nav-title">Financial Sovereignty — A Reference Implementation</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>The Sovereign Stack Framework</p>
+  <p><a href="index.html">Return to Overview</a></p>
+</footer>
+
+</body>
+</html>

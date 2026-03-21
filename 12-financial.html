@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 12 — Financial Sovereignty | The Sovereign Stack</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .primitive-block {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: var(--s4) var(--s5);
+      margin: var(--s4) 0;
+    }
+    .primitive-block.green { border-left-color: var(--accent2); }
+    .primitive-block.gold { border-left-color: var(--accent3); }
+    .primitive-block .primitive-name {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--s2);
+    }
+    .primitive-block.green .primitive-name { color: var(--accent2); }
+    .primitive-block.gold .primitive-name { color: var(--accent3); }
+    .primitive-block .primitive-schema {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.8;
+      background: var(--bg-dark);
+      color: #E8E2D8;
+      padding: var(--s3) var(--s4);
+      border-radius: 4px;
+      margin: var(--s2) 0 var(--s3);
+      overflow-x: auto;
+    }
+    .primitive-block p {
+      font-size: 0.88rem;
+      color: var(--fg-mid);
+      margin-bottom: 0;
+    }
+    .monetary-layers {
+      margin: var(--s6) 0;
+    }
+    .monetary-layer {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+    .monetary-layer:last-child { border-bottom: 1px solid var(--border); }
+    .monetary-layer:hover { background: var(--bg-alt); }
+    .monetary-layer .ml-num {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--fg-light);
+      padding: var(--s3) var(--s4);
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      min-width: 60px;
+      justify-content: center;
+    }
+    .monetary-layer .ml-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      padding: var(--s3) var(--s4);
+      min-width: 220px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+    .monetary-layer .ml-desc {
+      font-size: 0.85rem;
+      color: var(--fg-mid);
+      padding: var(--s3) var(--s4);
+      flex: 1;
+      line-height: 1.6;
+    }
+    .threat-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2px;
+    }
+    .threat-row > div {
+      background: var(--bg);
+      padding: var(--s3) var(--s4);
+      font-size: 0.85rem;
+    }
+    .threat-row .tr-threat {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: var(--fg);
+    }
+    .threat-row .tr-attack {
+      color: var(--fg-mid);
+      font-size: 0.82rem;
+    }
+    .threat-row .tr-defense {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent2);
+    }
+    .threat-header {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      gap: 1px;
+      margin-bottom: var(--s2);
+    }
+    .threat-header span {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-light);
+      padding-left: var(--s4);
+    }
+    .flow-diagram {
+      margin: var(--s6) 0;
+    }
+    .flow-step {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 2px;
+    }
+    .flow-step .step-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--fg-light);
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-right: none;
+      background: var(--bg-alt);
+    }
+    .flow-step .step-action {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--fg);
+      padding: var(--s3) var(--s4);
+      border: 1px solid var(--border);
+      border-right: none;
+      min-width: 240px;
+      display: flex;
+      align-items: center;
+    }
+    .flow-step .step-layer {
+      font-size: 0.78rem;
+      color: var(--fg-mid);
+      padding: var(--s3) var(--s4);
+      border: 1px solid var(--border);
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    .flow-step .step-enforcement {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: var(--s3) var(--s4);
+      border: 1px solid var(--border);
+      border-left: none;
+      min-width: 160px;
+      display: flex;
+      align-items: center;
+    }
+    .flow-header {
+      display: flex;
+      margin-bottom: var(--s2);
+    }
+    .flow-header span {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-light);
+    }
+    .flow-header span:nth-child(1) { min-width: 44px; text-align: center; }
+    .flow-header span:nth-child(2) { min-width: 240px; padding-left: var(--s4); }
+    .flow-header span:nth-child(3) { flex: 1; padding-left: var(--s4); }
+    .flow-header span:nth-child(4) { min-width: 160px; padding-left: var(--s4); }
+    @media (max-width: 768px) {
+      .monetary-layer { flex-direction: column; }
+      .monetary-layer .ml-num,
+      .monetary-layer .ml-name { border-right: none; border-bottom: 1px solid var(--border-lt); min-width: auto; }
+      .threat-row, .threat-header { grid-template-columns: 1fr; }
+      .flow-step, .flow-header { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">The Sovereign <span>Stack</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="01-problem.html">The Problem</a></li>
+      <li><a href="02-stack.html">The Stack</a></li>
+      <li><a href="03-physical.html">Physical Layer</a></li>
+      <li><a href="04-institutional.html">Institutional Layer</a></li>
+      <li><a href="05-cognitive.html">Cognitive Layer</a></li>
+      <li><a href="06-knowledge.html">Knowledge &amp; Data</a></li>
+      <li><a href="07-geopolitics.html">Geopolitics</a></li>
+      <li><a href="08-threats.html">Threats</a></li>
+      <li><a href="09-telos.html">The Telos</a></li>
+      <li><a href="10-implementation.html">Implementation</a></li>
+      <li><a href="11-system-model.html">System Model</a></li>
+      <li><a href="12-financial.html" class="active">Financial Layer</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <span class="chapter-num">Chapter 12</span>
+  <h1>Financial Sovereignty — <em>A Reference Implementation</em></h1>
+  <p class="subtitle">The financial layer is where the system model meets the domain where dependency is most efficiently weaponized. This chapter instantiates the primitives, enforcement points, and full transaction lifecycle for a sovereignty-grade financial system — one that cannot be frozen, denied, or controlled from outside the boundary.</p>
+</header>
+
+<section class="content">
+  <div class="prose">
+
+    <p class="lead">Capital is the universal dependency. Every other layer of the sovereignty stack — energy infrastructure, food systems, institutional architecture, education — requires capital to build. A nation that cannot control its own monetary system cannot control anything else for long. Financial sovereignty is therefore not one layer among equals. It is the layer whose absence makes every other layer conditional on someone else's permission.</p>
+
+    <h2>Why Finance Is the <em>Primary Attack Surface</em></h2>
+
+    <p>The weaponization of financial systems is the cleanest form of coercion in the modern international order. It requires no military presence. It produces no visible casualties. It is operationally reversible — which makes it an attractive first resort rather than a last one. The mechanisms are well-established:</p>
+
+    <p><strong>SWIFT exclusion</strong> severs a nation from the global payment infrastructure, making imports and exports impossible without bilateral workarounds. <strong>Asset freezes</strong> immobilize foreign-held reserves — often the majority of a small nation's savings — without physical confiscation. <strong>Payment rail denial</strong> prevents citizens and institutions from transacting with counterparties in sanctioning nations. <strong>Credit system exclusion</strong> raises borrowing costs to prohibitive levels, preventing capital investment precisely when sovereignty projects require it most.</p>
+
+    <p>Each of these mechanisms exploits a dependency relationship. The sovereign financial system is designed to eliminate each dependency while preserving the ability to participate voluntarily in the global economy from a position of strength rather than desperation.</p>
+
+    <div class="callout accent">
+      <div class="callout-label">The Dependency Trap</div>
+      <p>A nation that holds its reserves in a foreign currency, settles transactions through foreign-controlled payment rails, and borrows in markets governed by foreign law has outsourced every meaningful financial decision. It retains the symbols of sovereignty — a central bank, a currency, a finance ministry — while the actual enforcement layer operates in another jurisdiction. This is the condition the framework is designed to escape.</p>
+    </div>
+
+    <h2>Financial Primitives — <em>Instantiating the System Model</em></h2>
+
+    <p>The system model defined five hard primitives. The financial layer instantiates each one for the specific constraints of monetary sovereignty.</p>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Identity → Sovereign Financial Identity</div>
+      <div class="primitive-schema">FinancialIdentity extends Identity {
+  citizenship:    Credential       // issued by sovereign node, hardware-bound
+  wallet_address: bytes            // derived from pubkey; non-custodial
+  kyc_tier:       enum             // citizen | resident | institution | foreign
+  transaction_limits: Policy       // per tier, enforced at policy layer
+  sanctions_check: boolean         // evaluated at policy runtime, not stored
+}</div>
+      <p>Financial identity is not a bank account number. It is a cryptographic credential issued by the sovereign node, bound to hardware, and carrying verifiable claims about citizenship status and transaction authorization level. It is non-custodial: no third party holds the private key. Sanctions evaluation happens at policy runtime against a public registry — it is a query, not a data field, which prevents the registry from being weaponized against individuals through data aggregation.</p>
+    </div>
+
+    <div class="primitive-block green">
+      <div class="primitive-name">Resource → The Three Monetary Layers</div>
+      <div class="primitive-schema">MonetaryResource {
+  layer:          enum             // bitcoin_reserve | sovereign_subnet | stablecoin
+  asset_id:       string
+  custodian:      MPCKeySet        // no single holder; requires threshold signature
+  peg:            PegMechanism?    // null for BTC; physical basket for stablecoin
+  circuit_breaker: CircuitPolicy  // automatic suspension thresholds
+}</div>
+      <p>The monetary system has three distinct resource layers, each serving a different function and requiring different governance. They are described in detail below. What matters structurally: every monetary resource is custodied by an MPC key set, not an individual or institution. No single actor can move sovereign funds unilaterally.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Policy → MPC-Enforced Monetary Governance</div>
+      <div class="primitive-schema">MonetaryPolicy extends Policy {
+  quorum:         { threshold: uint, keyholders: Role[] }
+  // e.g.: threshold=2, keyholders=[judicial, legislative, citizen_rep]
+  time_lock:      Duration         // minimum deliberation period for policy changes
+  public_notice:  Duration         // required public comment period
+  rollback_window: Duration        // period during which citizens can petition reversal
+  audit_visibility: enum           // public | restricted | classified
+}</div>
+      <p>Monetary policy changes require multi-party authorization: no single branch of government controls the financial system. Time locks and public notice requirements prevent rapid, opaque policy changes — the most common vector for institutional capture of financial systems. The rollback window gives the citizenry a formal mechanism to contest changes before they become irreversible.</p>
+    </div>
+
+    <div class="primitive-block gold">
+      <div class="primitive-name">Execution Context → Transaction Provenance</div>
+      <div class="primitive-schema">TransactionContext extends ExecutionContext {
+  initiator:      FinancialIdentity
+  counterparty:   FinancialIdentity | ExternalEntity
+  amount:         { value, currency, layer }
+  purpose_code:   enum             // trade | public_service | reserve | cross_border
+  hardware_attestation: bytes      // proof of sovereign node execution
+  cross_border:   boolean          // triggers additional policy evaluation
+}</div>
+      <p>Every transaction carries its full execution context. Cross-border transactions trigger a separate policy evaluation: does this transaction create a dependency that could be used as leverage? Does the counterparty have a record of using financial relationships as coercion instruments? These are policy questions, not compliance questions — they are evaluated against sovereign policy, not against a foreign regulatory framework.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Audit Log → Public Ledger</div>
+      <div class="primitive-schema">FinancialAuditEntry extends AuditEntry {
+  transaction_id: string           // globally unique, on-chain
+  anonymization:  enum             // citizen_amount | institution_full | sovereign_full
+  // Citizens: amounts public, identities pseudonymous
+  // Institutions: fully public
+  // Sovereign operations: fully public, no exceptions
+}</div>
+      <p>Institutional and sovereign transactions are fully public. Citizen transactions are pseudonymous by default — amounts are visible, identities are accessible to authorized investigators with policy-level authorization. The asymmetry is intentional: institutions and governments cannot hide their financial behavior from the citizens they serve. Citizens retain privacy from mass surveillance while remaining accountable for institutional-scale activity.</p>
+    </div>
+
+    <h2>The Three Monetary <em>Layers</em></h2>
+
+    <p>A sovereign financial system cannot be built on a single monetary instrument. Different functions require different properties — and those properties are genuinely in tension. The three-layer architecture resolves the tension by assigning each function to the instrument best suited to it.</p>
+
+    <div class="monetary-layers">
+      <div class="monetary-layer">
+        <div class="ml-num">L3</div>
+        <div class="ml-name">Bitcoin Reserve</div>
+        <div class="ml-desc"><strong>Function:</strong> Ultimate reserve asset and international settlement. <strong>Properties:</strong> Fixed supply, no counterparty, censorship-resistant, global liquidity. <strong>Why:</strong> The one monetary asset that cannot be frozen, inflated, or denied by any external actor. Not subject to any nation's jurisdiction. Held in cold storage under MPC custody — no single key holder, no single failure point. Used for large-scale international settlements and as the floor beneath the stablecoin peg.</div>
+      </div>
+      <div class="monetary-layer">
+        <div class="ml-num">L2</div>
+        <div class="ml-name">Sovereign Subnet</div>
+        <div class="ml-desc"><strong>Function:</strong> Smart contract execution layer for public services, institutional transactions, and complex financial instruments. <strong>Properties:</strong> Formally verified core contracts, MPC-governed validator set, deterministic execution, sovereign node control of upgrade authority. <strong>Why:</strong> Public services — tax collection, benefit distribution, procurement, land registry — require programmable money with formal correctness guarantees. Formal verification means the contract does what its specification says it does; there is no gap for informal exploitation.</div>
+      </div>
+      <div class="monetary-layer">
+        <div class="ml-num">L1</div>
+        <div class="ml-name">Physical Stablecoin</div>
+        <div class="ml-desc"><strong>Function:</strong> Day-to-day medium of exchange for citizens and domestic commerce. <strong>Properties:</strong> Stable value, usable without financial sophistication, pegged to a basket of physical outputs the sovereign node actually produces. <strong>Why:</strong> Citizens need a medium of exchange that does not require understanding of Bitcoin volatility. Pegging to physical outputs — geothermal energy, agricultural production, construction materials — grounds the currency in real productive capacity rather than foreign fiat or algorithmic abstraction.</div>
+      </div>
+    </div>
+
+    <h2>Stability Mechanisms — <em>The Enforcement Model</em></h2>
+
+    <p>A stablecoin peg without enforcement mechanisms is a commitment without teeth. Three enforcement mechanisms protect the peg under different stress conditions:</p>
+
+    <p><strong>Tax-credit floor.</strong> The sovereign node accepts the stablecoin for all tax obligations at face value. This creates a hard demand floor: as long as citizens owe taxes, the stablecoin has a guaranteed buyer at parity. The floor is not advisory — it is enforced at the policy layer of the sovereign subnet. A government that would not accept its own currency for tax payments is a government that does not believe in it.</p>
+
+    <p><strong>Automated market maker backstop.</strong> An on-chain AMM maintains liquidity between the stablecoin and the Bitcoin reserve during periods of low market activity. The AMM is parameterized by policy — not by the preferences of a central bank governor — and its parameters require MPC authorization to change. The AMM cannot be shut down by any single actor; suspension requires threshold authorization from multiple key holders.</p>
+
+    <p><strong>Circuit breakers.</strong> If the stablecoin price falls below a defined threshold or if transaction volumes exceed anomalous levels indicating a bank-run pattern, the circuit breaker automatically suspends trading on the sovereign subnet. During suspension, citizens can still transact at the L1 layer for essential goods and services; only the settlement layer is paused. Resumption requires MPC authorization and a mandatory public audit of the trigger conditions. Circuit breakers prevent a panic from becoming a collapse; they buy time for governance to respond without requiring that governance be fast enough to outrun a panic in real time.</p>
+
+    <h2>Governance Architecture — <em>The Policy Layer</em></h2>
+
+    <p>The financial system's governance is the institutional architecture applied to the specific domain of money. The design principles are the same as Chapter 4's institutional layer, instantiated for financial operations:</p>
+
+    <p><strong>No single-key control.</strong> Every operation on sovereign monetary reserves requires threshold signatures from key holders distributed across branches: judicial, legislative, and citizen representatives. No executive branch holds unilateral access to the reserve. This is not a governance recommendation — it is enforced at the cryptographic layer. The system does not permit single-key operations on sovereign funds; there is no administrative override.</p>
+
+    <p><strong>Hardware heterogeneity.</strong> The validator nodes running the sovereign subnet run on hardware from multiple competing manufacturers — Intel, AMD, RISC-V — with independent firmware. A vulnerability that compromises one hardware family does not compromise the network. This is analogous to biodiversity in agricultural systems: monoculture creates catastrophic failure modes that heterogeneous systems avoid.</p>
+
+    <p><strong>Dispute resolution tiers.</strong> Financial disputes are resolved through a three-tier system matching dispute complexity to resolution mechanism: automated smart contract arbitration for rule-bound disputes; blockchain-native dispute courts staffed by certified citizen arbiters for interpretive disputes; constitutional financial court for disputes involving sovereign monetary policy. Each tier requires progressively more deliberation and has progressively higher authority. Most disputes never leave the first tier; the existence of the higher tiers provides the legitimacy that makes the first tier's decisions trusted.</p>
+
+    <h2>The Transaction <em>Lifecycle</em></h2>
+
+    <p>Every financial transaction in the sovereign system follows a defined lifecycle. The lifecycle maps each step to a framework layer and an enforcement point.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-header">
+        <span>#</span>
+        <span>Step</span>
+        <span>Framework Layer</span>
+        <span>Enforcement Point</span>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <div class="step-action">Citizen initiates transaction</div>
+        <div class="step-layer">Physical — sovereign node hardware</div>
+        <div class="step-enforcement">Ingestion boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <div class="step-action">Identity verified (hardware key)</div>
+        <div class="step-layer">Institutional — DID + credential check</div>
+        <div class="step-enforcement">Query boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <div class="step-action">Policy evaluated (amount, tier, purpose)</div>
+        <div class="step-layer">Institutional — MPC policy runtime</div>
+        <div class="step-enforcement">Query boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <div class="step-action">Cross-border check (if applicable)</div>
+        <div class="step-layer">Geopolitical — dependency policy evaluation</div>
+        <div class="step-enforcement">Query boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <div class="step-action">Transaction broadcast to subnet</div>
+        <div class="step-layer">Physical — sovereign validator set</div>
+        <div class="step-enforcement">Pipeline boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <div class="step-action">Smart contract executes (formally verified)</div>
+        <div class="step-layer">Institutional — verified execution layer</div>
+        <div class="step-enforcement">Pipeline boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">07</div>
+        <div class="step-action">Settlement confirmed</div>
+        <div class="step-layer">Physical — on-chain finality</div>
+        <div class="step-enforcement">Output boundary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">08</div>
+        <div class="step-action">Audit recorded (public ledger)</div>
+        <div class="step-layer">All layers — permanent, chained, public</div>
+        <div class="step-enforcement">Audit log (always)</div>
+      </div>
+    </div>
+
+    <h2>Education as <em>Security</em></h2>
+
+    <p>The cognitive sovereignty layer is not separate from the financial system — it is one of its primary security mechanisms. A financial system that citizens cannot understand is a financial system they cannot defend.</p>
+
+    <p><strong>Logic Houses as verification institutions.</strong> Rather than a single government curriculum for financial literacy, competing Logic Houses — independent institutions with distinct pedagogical approaches — train citizens in the principles underlying the financial system: cryptography, contract verification, monetary policy, and the history of financial coercion. The competition between houses prevents any single ideological capture of financial education. Houses whose graduates demonstrate higher rates of identifying flaws in national governance specifications receive higher public allocations.</p>
+
+    <p><strong>Specification defense periods.</strong> Every significant change to the financial system's smart contracts or policy parameters must survive a public defense period in which the technical authors are required to explain their specifications to panels of non-technical citizens drawn from Logic House graduates. This is not a rubber-stamp process — citizen panels have formal authority to reject specifications they cannot understand or that appear to contain hidden provisions. A specification that cannot be explained to an intelligent non-expert should not be deployed.</p>
+
+    <p><strong>Cryptographic sunset.</strong> The founding governance keys — the keys used to establish the initial financial system architecture — expire after a defined period, typically 24 to 36 months. Authority transfers to the first cohort of citizens who have earned advanced financial governance credentials through the Logic House system. This mechanism institutionalizes generational renewal and prevents founder capture: the people who built the system cannot permanently control it.</p>
+
+    <h2>Threat Model — <em>Engineering the Defense</em></h2>
+
+    <p>A financial system described without a threat model is not yet an engineering document. The following maps the primary attack vectors against the specific defenses the system provides.</p>
+
+    <div class="threat-header">
+      <span>Threat</span>
+      <span>Attack Vector</span>
+      <span>Defense Mechanism</span>
+    </div>
+    <div class="threat-row">
+      <div class="tr-threat">Extraterritorial seizure</div>
+      <div class="tr-attack">Foreign government orders financial institution to freeze sovereign assets; CLOUD Act compels disclosure or control</div>
+      <div class="tr-defense">Bitcoin reserve has no custodian subject to foreign jurisdiction. MPC keys distributed across domestic holders. Sovereign subnet runs on domestic hardware with no foreign cloud dependency.</div>
+    </div>
+    <div class="threat-row">
+      <div class="tr-threat">Payment rail exclusion</div>
+      <div class="tr-attack">SWIFT exclusion or correspondent banking denial severs international settlement capacity</div>
+      <div class="tr-defense">Bitcoin layer provides censorship-resistant international settlement. Bilateral agreements with other sovereign nodes provide SWIFT-independent payment rails for trade within the node network.</div>
+    </div>
+    <div class="threat-row">
+      <div class="tr-threat">Identity spoofing</div>
+      <div class="tr-attack">Attacker forges financial identity to access restricted accounts, manipulate governance votes, or launder funds through the sovereign system</div>
+      <div class="tr-defense">Hardware-bound keys make identity non-transferable without physical possession. Credential revocation is on-chain and instantaneous. Biometric binding optional for high-value operations.</div>
+    </div>
+    <div class="threat-row">
+      <div class="tr-threat">Policy capture</div>
+      <div class="tr-attack">A faction seizes sufficient institutional authority to alter monetary policy in their favor — inflating the supply, freezing opposition accounts, or redirecting reserves</div>
+      <div class="tr-defense">MPC requires threshold authorization across branches. Time locks and public notice periods prevent rapid opaque changes. Circuit breakers prevent emergency consolidation of financial authority.</div>
+    </div>
+    <div class="threat-row">
+      <div class="tr-threat">Reserve depletion</div>
+      <div class="tr-attack">Coordinated attack on the stablecoin peg depletes the Bitcoin reserve, destroying the floor beneath the currency</div>
+      <div class="tr-defense">AMM backstop limits the rate of reserve drain. Circuit breakers suspend trading before reserves are critically depleted. Tax-credit floor maintains demand even during peg stress. Bitcoin reserve is sized for the attack surface, not just normal operations.</div>
+    </div>
+    <div class="threat-row">
+      <div class="tr-threat">Cognitive capture of governance</div>
+      <div class="tr-attack">Education layer is gradually captured by an ideology that trains citizens to misunderstand the financial system's safeguards, creating popular pressure to dismantle them</div>
+      <div class="tr-defense">Competing Logic Houses prevent monoculture. Specification defense periods require that changes survive scrutiny by graduates of all houses. Cryptographic sunset ensures no founding cohort permanently controls the curriculum.</div>
+    </div>
+
+    <div class="callout gold">
+      <div class="callout-label">The Residual Risk</div>
+      <p>The system cannot defend against a majority of citizens who genuinely and freely choose to dismantle its protections. Nor should it. A system that imposes sovereignty on an unwilling population has confused sovereignty with control. The entire architecture — from the cognitive layer to the cryptographic sunset — is designed to ensure that if the protections are ever dismantled, it is because free and informed citizens chose to dismantle them, not because they were deceived, captured, or never given the tools to understand what they were giving up.</p>
+    </div>
+
+    <h2>What Financial Sovereignty <em>Cannot Solve</em></h2>
+
+    <p>The system model enforces the policies it is given. If the institutional layer fails — if a faction seizes sufficient political authority to rewrite monetary policy — MPC becomes an obstacle to be removed rather than a safeguard to be respected. The financial system's security against this failure mode is borrowed from the institutional and cognitive layers, not generated internally.</p>
+
+    <p>Bitcoin's energy consumption is a material constraint. A sovereign node that builds its reserve architecture on Bitcoin inherits Bitcoin's energy requirements. For a geothermal-rich nation this may be an asymmetric advantage — cheap, abundant, renewable energy makes Bitcoin mining a productive use of surplus capacity. For an energy-poor nation it may be a constraint that requires a different reserve architecture. The framework does not require Bitcoin; it requires an uncensorable reserve asset. Bitcoin is the best current candidate. If a better candidate emerges, the architecture accommodates it.</p>
+
+    <p>Cross-border adoption is not guaranteed. The financial layer achieves full sovereignty only when enough trade partners can transact through the node network's bilateral rails. A fully sovereign financial system with no trading partners is autarky, not sovereignty. Building the network of sovereign nodes — the coalition described in Chapter 10 — is as critical to financial sovereignty as building the technical architecture. The system enforces sovereignty over what it controls; diplomacy extends what it controls.</p>
+
+    <blockquote>
+      <p>A nation that controls its own money controls its own future. A nation whose money is controlled elsewhere has already surrendered the most important sovereign decision it will ever make — not to a foreign army, but to a foreign payment system.</p>
+    </blockquote>
+
+    <div class="chapter-nav">
+      <a href="11-system-model.html">
+        <div class="nav-dir">← Previous</div>
+        <div class="nav-title">The System Model — Primitives &amp; Enforcement</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-dir">Return →</div>
+        <div class="nav-title">Framework Overview</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>The Sovereign Stack Framework — offered freely for consideration, critique, and adaptation.</p>
+  <p><a href="index.html">Return to Overview</a></p>
+</footer>
+
+</body>
+</html>
