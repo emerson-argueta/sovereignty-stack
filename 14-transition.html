@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 14 — The East African Node: Day 0 to Day 3650 | The Sovereign Stack</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .timeline-block {
+      border-left: 3px solid var(--accent);
+      padding-left: var(--s5);
+      margin-bottom: var(--s7);
+      position: relative;
+    }
+    .timeline-block::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 4px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .timeline-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--s2);
+    }
+    .timeline-block h3 {
+      margin-top: 0;
+    }
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s4);
+      margin: var(--s5) 0;
+    }
+    .status-cell {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: var(--s4);
+    }
+    .status-cell .label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-mid);
+      margin-bottom: var(--s2);
+    }
+    .status-cell .value {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .crisis-box {
+      border: 2px solid #b85c38;
+      background: #fdf4f0;
+      border-radius: 4px;
+      padding: var(--s4) var(--s5);
+      margin: var(--s5) 0;
+    }
+    .crisis-box .crisis-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #b85c38;
+      margin-bottom: var(--s3);
+    }
+    @media (max-width: 600px) {
+      .status-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">The Sovereign <span>Stack</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="01-problem.html">The Problem</a></li>
+      <li><a href="02-stack.html">The Stack</a></li>
+      <li><a href="03-physical.html">Physical Layer</a></li>
+      <li><a href="04-institutional.html">Institutional Layer</a></li>
+      <li><a href="05-cognitive.html">Cognitive Layer</a></li>
+      <li><a href="06-knowledge.html">Knowledge &amp; Data</a></li>
+      <li><a href="07-geopolitics.html">Geopolitics</a></li>
+      <li><a href="08-threats.html">Threats</a></li>
+      <li><a href="09-telos.html">The Telos</a></li>
+      <li><a href="10-implementation.html">Implementation</a></li>
+      <li><a href="11-system-model.html">System Model</a></li>
+      <li><a href="12-financial.html">Financial Layer</a></li>
+      <li><a href="13-responses.html">Hard Problems</a></li>
+      <li><a href="14-transition.html" class="active">Transition Path</a></li>
+      <li><a href="15-redteam.html">Red-Team</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <span class="chapter-num">Chapter 14</span>
+  <h1>Day 0 to Day <em>3650</em></h1>
+  <p class="subtitle">A concrete ten-year transition path for one pilot archetype: the East African federated node. What must happen when. Where the theory breaks under operational pressure. And what survives the collision with reality.</p>
+</header>
+
+<section class="content">
+  <div class="prose">
+
+    <p class="lead">Abstract frameworks are easy to believe in. The question is whether the framework holds when it collides with a specific geography, a specific political history, a specific set of existing dependencies, and a specific sequence of crises that no one predicted. This chapter runs that collision for one archetype — not to predict what will happen, but to identify what must be solved before day zero begins.</p>
+
+    <h2>Why <em>East Africa</em></h2>
+
+    <p>The East African federated node — drawing on Kenya, Tanzania, Uganda, Rwanda, and potentially Burundi and Ethiopia — represents one of the most promising candidate archetypes because it combines resource potential with genuine political motivation and an existing, if incomplete, regional integration project.</p>
+
+    <p>The resource case is strong. The East African Rift Valley contains geothermal energy potential sufficient to power the entire region multiple times over; Kenya alone already operates the eighth-largest geothermal capacity in the world. Lake Victoria and the highland river systems provide fresh water that, managed correctly, is sufficient for both agriculture and industrial use. The region's equatorial and sub-equatorial agriculture produces diverse food crops across multiple climate zones, with significant expansion capacity. The Indian Ocean coastline provides access to global shipping. And the region sits above significant deposits of rare earth minerals, lithium, and rare metals whose strategic importance is increasing.</p>
+
+    <p>The political motivation is equally significant. East African nations share recent colonial histories that created dependency relationships with the same European powers, and there is genuine regional consensus — among intellectuals, reformers, and a significant portion of the civil society layer — that the post-colonial institutional inheritance has not served the population well. The East African Community (EAC) provides an existing, if weak, institutional skeleton that a more ambitious project could inhabit.</p>
+
+    <p>The challenges are also representative. High existing dependency on external debt, technology platforms, medical supply chains, and agricultural inputs. Significant inter-state political tensions — particularly between Kenya and Ethiopia, and around the Rwandan-Congolese border — that any federation must navigate. Existing great power competition for influence: Chinese infrastructure investment, American military relationships, French post-colonial interests in the broader region, and Gulf state agricultural investment. A founding coalition must navigate all of this simultaneously.</p>
+
+    <h2>The <em>Archetype</em> Assumptions</h2>
+
+    <div class="status-grid">
+      <div class="status-cell">
+        <div class="label">Combined Population</div>
+        <div class="value">120–180 million across participating nations. Sufficient for talent density, institutional complexity, and military deterrence.</div>
+      </div>
+      <div class="status-cell">
+        <div class="label">Founding Trigger</div>
+        <div class="value">A debt crisis affecting multiple EAC members simultaneously, creating political conditions for a more radical integration proposal than has previously been viable.</div>
+      </div>
+      <div class="status-cell">
+        <div class="label">Founding Coalition</div>
+        <div class="value">A cross-national consortium: reform-oriented heads of state (minimum 3 of 5 founding nations), aligned civil society and academic leadership, and diaspora networks providing technical expertise and financial bridging.</div>
+      </div>
+      <div class="status-cell">
+        <div class="label">Starting Stack State</div>
+        <div class="value">Physical layer ~15% complete (geothermal nascent, food partially sovereign, water stressed). Institutional layer ~5% (EAC framework only). Cognitive layer ~2%.</div>
+      </div>
+    </div>
+
+    <hr class="hero-rule" style="margin: var(--s6) 0;">
+
+    <h2>Year One — <em>Days 1 to 365</em></h2>
+    <h3>The Founding Compact</h3>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 1–90</div>
+      <h3>Constitutional Drafting</h3>
+      <p>The founding compact is drafted by a constitutional assembly convened across all participating nations — not negotiated among heads of state in a closed room, but written by a representative body that includes civil society, regional leaders, religious institutions, and youth organizations. The draft is published at the 60-day mark and open for public comment for thirty days. This is not a formality; it is the first test of whether the founding coalition can tolerate genuine criticism.</p>
+      <p>The constitutional framework establishes three non-negotiable structural provisions before anything else is negotiated: the distribution of cryptographic key authority across the federation's founding entities, the timeline and milestones for full MPC/DKG implementation (with legal consequences for failure to meet milestones), and the absolute protection of freedom of conscience across all participating jurisdictions.</p>
+    </div>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 91–180</div>
+      <h3>The Key Ceremony</h3>
+      <p>The federation's founding key distribution ceremony is conducted with full public transparency — live-streamed, independently verified by three external cryptographic auditors from institutions with no political relationship to any founding nation. The ceremony distributes threshold keys across twenty-seven founding key holders: three representatives from each of the five founding nations (chosen by distinct processes — one elected, one appointed by civil society, one randomly selected from a pool of verified candidates), plus twelve at-large positions held by diaspora representatives, academic institutions, and civil society organizations.</p>
+      <p>The threshold is set at seventeen of twenty-seven — enough to require genuine cross-border consensus for any constitutional change, while still permitting action if several key holders become unavailable. No single nation's nine representatives can alone reach the threshold. No combination of two nations can reach the threshold without at least partial participation from the at-large holders.</p>
+      <p>The private keys are generated by the key holders themselves using hardware security modules purchased from three different suppliers in three different jurisdictions. No single entity sees all key shares. The ceremony is the first moment at which the founding compact becomes cryptographically enforced rather than merely politically agreed.</p>
+    </div>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 181–365</div>
+      <h3>Tier One Cognitive Program Launch</h3>
+      <p>The founding year's most important education investment is not the generational curriculum — that is a decade-long project. It is the rapid deployment of Tier One cognitive training (as described in Chapter 13) to three thousand targeted individuals across the founding nations: senior civil servants, judges, military officers, editors and bureau chiefs, university faculty, and senior religious leaders. This cohort is the immune system for the first five years of the federation's existence.</p>
+      <p>The training is intensive — six weeks residential, drawing on the framework's adversarial reasoning curriculum compressed for professionals — and is deliberately cross-national. Kenyan judges train alongside Ugandan military officers and Tanzanian editors. The cross-national relationships formed during this training become the informal network that the federation's formal institutions will run on.</p>
+    </div>
+
+    <div class="crisis-box">
+      <div class="crisis-label">First Predictable Crisis — Days 200–280</div>
+      <p><strong>External creditor pressure.</strong> The IMF and bilateral creditors from France and China simultaneously demand that federation debt renegotiation terms include provisions that constrain the federation's ability to restrict foreign ownership of key infrastructure. This is not coincidental — it is the debt lever used against every integration project that threatens dependency relationships. The founding coalition must decide whether to accept modified terms, default selectively, or find bridge financing from the sovereign-aligned network. The decision will be the first test of whether the founding compact's commitments are real or rhetorical.</p>
+      <p><strong>What breaks here if the framework is working:</strong> The constitutional transparency requirement prevents any individual head of state from cutting a separate deal with creditors outside the founding compact's terms. The at-large key holders — whose interests are not aligned with any single national government — provide institutional resistance to accommodation. The diaspora financing network provides enough bridge capital to avoid emergency capitulation. The crisis is survived, at cost.</p>
+    </div>
+
+    <hr class="hero-rule" style="margin: var(--s6) 0;">
+
+    <h2>Years Two and Three — <em>Days 366 to 1095</em></h2>
+    <h3>Physical Layer Buildout Begins</h3>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 366–730</div>
+      <h3>Energy Infrastructure: The Geothermal Spine</h3>
+      <p>The Rift Valley geothermal development program is the federation's most important physical sovereignty project and its most achievable one — Kenya's existing geothermal expertise (KenGen operates Olkaria, one of the world's largest geothermal plants) is available to apply across the region. The program targets: 3GW additional geothermal capacity across Kenya, Ethiopia, and Tanzania within five years, plus a regional grid interconnection that makes every participating nation resilient to the failure of any single generation asset.</p>
+      <p>Critical constraint: the drilling and generation equipment supply chain currently runs through Western and Chinese manufacturers. The federation negotiates split-source procurement — no more than 40% of critical equipment from any single supplier nation — as a first step toward establishing the manufacturing capability to build this equipment domestically within ten years.</p>
+      <p>The geothermal program is financed through the federation's sovereign bond issuance — denominated in the federation's new unit of account rather than dollars or euros — and through direct inter-node investment from two early sovereign-aligned partners who receive guaranteed energy export agreements in exchange. This is the first test of whether the inter-node financial architecture can function under real conditions.</p>
+    </div>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 731–1095</div>
+      <h3>Food Sovereignty Assessment and Regenerative Agriculture Transition</h3>
+      <p>The federation commissions a full food sovereignty audit: what is each participating nation currently producing, what is it importing, and what is the realistic agricultural capacity of the combined territory using regenerative rather than extractive methods? This audit takes twelve months and involves soil scientists, hydrologists, agronomists, and smallholder farmer cooperatives across the region.</p>
+      <p>The audit reveals the structural truth that dependency analysis always reveals: the federation is more food-capable than it believes, and a significant portion of its food imports exist not because it cannot grow those crops but because import arrangements established during the colonial period and maintained through debt-tied agricultural policy made domestic production artificially uneconomical. Eliminating those structural distortions — not through tariffs alone but through a comprehensive soil restoration program, seed sovereignty initiative, and smallholder cooperative financing program — is a five-to-eight-year project. It begins now.</p>
+      <p>The seed sovereignty initiative is particular worth noting. The federation establishes a distributed open-source seed library — maintained through the knowledge commons protocol — that preserves locally-adapted varieties that have been systematically displaced by commercial monoculture. This is not romantic agrarianism; it is resilience engineering. A food system dependent on seed imports from three multinationals is not food-sovereign regardless of how much it grows.</p>
+    </div>
+
+    <div class="crisis-box">
+      <div class="crisis-label">Second Predictable Crisis — Days 820–950</div>
+      <p><strong>Leadership defection attempt.</strong> One of the founding heads of state — facing domestic political pressure from business interests that profit from the existing dependency relationships — attempts to negotiate a separate bilateral trade agreement with a great power that would create preferred access terms incompatible with the federation's constitutional framework. The founding compact's key structure prevents this: any trade agreement that modifies constitutional economic provisions requires the seventeen-of-twenty-seven threshold. The head of state cannot sign unilaterally. But the attempt creates a political crisis within the founding coalition, and the great power's offer remains on the table, visible to the population as an alternative to the harder path of building the stack.</p>
+      <p><strong>What breaks here if the framework is working:</strong> The Tier One cognitive immune system — now eighteen months into operation — has produced enough editors, educators, and civil society leaders capable of clearly explaining to the population what the offer actually represents (temporary comfort at the cost of permanent dependency) versus what the federation's path represents (real difficulty now, genuine independence later). The head of state survives politically but the defection attempt fails constitutionally. The episode strengthens the case for the framework among observers who see it hold under real pressure.</p>
+    </div>
+
+    <hr class="hero-rule" style="margin: var(--s6) 0;">
+
+    <h2>Years Four and Five — <em>Days 1096 to 1825</em></h2>
+    <h3>Technology Layer and Knowledge Commons</h3>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 1096–1460</div>
+      <h3>Technology Sovereignty: The Realistic Version</h3>
+      <p>Full technology sovereignty — domestic semiconductor fabrication, domestically-developed operating systems, independent AI infrastructure — is a twenty-to-thirty-year project even for nations with far greater starting capital and technical talent than the East African federation. The framework is honest about this. The realistic five-year technology goal is not independence but strategic reduction of the most dangerous dependency points.</p>
+      <p>Priority one: a federated cloud infrastructure running on domestically-operated hardware, with data sovereignty guarantees for government systems, critical infrastructure, and financial records. This does not require domestic chip fabrication; it requires domestic operation of servers and network infrastructure using hardware purchased through diversified supply chains. This is achievable within three years.</p>
+      <p>Priority two: an open-source software stack for government operations — built on and contributing to existing open-source ecosystems rather than starting from scratch — that eliminates the dependency on proprietary software vendors whose license terms can be revoked for political reasons. Several nodes in the sovereign-aligned network can contribute to this; the knowledge commons protocol makes the work portable.</p>
+      <p>Priority three: an AI research institute — federated across the participating nations' universities — focused on language models trained on East African languages and knowledge systems. The current AI infrastructure is almost entirely built on Western and Chinese language corpora, which means the federation's population cannot effectively interact with the most powerful reasoning tools in their own cognitive context. This is a dependency that compounds over time and is poorly understood as a dependency.</p>
+    </div>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 1461–1825</div>
+      <h3>Knowledge Commons Activation</h3>
+      <p>The federation formally joins the knowledge commons protocol with three other sovereign-aligned nodes — at this stage, the most likely partners are one Caribbean federation, one Central American node, and one Southeast Asian pilot — creating a four-node commons that begins genuine reciprocal knowledge exchange.</p>
+      <p>The commons' first shared research priorities are chosen specifically to address each node's most acute vulnerability: the East African node contributes geothermal engineering knowledge (its comparative advantage) and receives in exchange agricultural technology adapted to tropical soil conditions (from the Southeast Asian partner) and institutional design documentation from the Caribbean node's further-advanced governance experiments.</p>
+      <p>This is the moment when the network effect of the sovereign stack first becomes visible in practice. No single node could have developed all three knowledge domains in the same period. The commons produces knowledge faster than any node can produce alone, at a cost each node can afford.</p>
+    </div>
+
+    <div class="crisis-box">
+      <div class="crisis-label">Third Predictable Crisis — Days 1600–1750</div>
+      <p><strong>External disinformation campaign.</strong> A coordinated information operation — originating from actors with interests in the dependency relationships the federation is eliminating — targets the population of two founding nations with a sustained narrative: the federation is a failed experiment that has produced economic decline (factually incorrect but emotionally resonant during the difficult middle years when the old dependencies have been reduced but the new stack is not yet fully operational), and the founding leadership is corrupt (with fabricated financial documentation distributed through social media platforms that the federation does not control). The goal is to make the cost of continuing the stack higher than the perceived cost of returning to the prior arrangement.</p>
+      <p><strong>What breaks here if the framework is working:</strong> The Tier One immune system identifies the operation within ten days of its launch — the pattern recognition capacity trained into the three thousand founding cohort members begins producing public analysis of the operation's mechanics, funding signatures, and narrative structure. The cognitive training is not propaganda; it is anatomy. It teaches the population to see how the attack works rather than simply to reject it. Several editors who have been through the training publish detailed breakdowns of the fabricated documentation within two weeks. The operation continues — it does not stop when exposed — but its persuasive power is significantly reduced. The population of one founding nation still moves substantially toward skepticism of the federation; a referendum in that nation passes by a narrow margin rather than the comfortable margin it would have before the campaign. The margin is narrow enough that the crisis is real, but the federation survives intact.</p>
+    </div>
+
+    <hr class="hero-rule" style="margin: var(--s6) 0;">
+
+    <h2>Years Six and Seven — <em>Days 1826 to 2555</em></h2>
+    <h3>The Difficult Middle</h3>
+
+    <p>Years six and seven are the most dangerous years of the entire transition. The old dependencies have been substantially reduced — the federation is no longer existentially vulnerable to the specific leverage points that the great powers used against it in years one through five. But the new stack is not yet fully operational. The geothermal grid is 60% complete. Food sovereignty is at 70%. The technology layer is minimal. The institutional architecture is functional but not yet stress-tested by a genuine succession crisis. And the population is tired. The founding generation of leaders — who carried the vision through the difficult early years — are aging. A new generation of leaders is coming into power whose formative political experience was not the founding inspiration but the grinding middle years of sacrifice and partial achievement.</p>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 1826–2190</div>
+      <h3>The First Succession</h3>
+      <p>Two of the five founding heads of state reach their term limits under the federation's constitutional framework and cannot seek extension — this is the first test of the term limit enforcement architecture. In one nation, the incumbent attempts to argue for an emergency extension based on the external threat environment. The key holder threshold mechanism is invoked: the constitutional provision preventing term extensions requires the seventeen-of-twenty-seven key holders to authorize any constitutional modification, and that threshold is not reachable for an emergency extension because the at-large holders refuse to ratify it. The incumbent leaves office.</p>
+      <p>This moment is more important than any energy project or trade agreement. It is the first proof that the cryptographic governance architecture works under real political pressure — that the mechanisms designed to prevent democratic backsliding actually hold when a popular leader with genuine achievements doesn't want to leave power. The international press, the sovereign-aligned network, and most importantly the federation's own population watches this happen. The framework's credibility increases by a factor that no diplomatic success could have produced.</p>
+    </div>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 2191–2555</div>
+      <h3>First Cognitively Trained Cohort Enters Leadership</h3>
+      <p>The students who entered the federation's redesigned educational curriculum in year one are now in their early-to-mid twenties and beginning to enter the professional and civic life of the federation. This is not yet the full generational transformation — that takes another fifteen years — but it is the first visible evidence that the cognitive sovereignty investment is producing different citizens than the pre-federation educational system produced.</p>
+      <p>The specific difference is not that these citizens hold different political opinions. It is that they engage political questions differently: they are noticeably harder to manipulate through emotional appeals, more capable of identifying when a sophisticated argument has a structural flaw, and more comfortable sitting with genuine uncertainty rather than resolving it prematurely through tribal affiliation. The Tier One immune system — the founding three thousand — notices the difference first, because they are working directly with these young people in professional contexts.</p>
+    </div>
+
+    <hr class="hero-rule" style="margin: var(--s6) 0;">
+
+    <h2>Years Eight, Nine, and Ten — <em>Days 2556 to 3650</em></h2>
+    <h3>Proof of Concept and the New Pressure</h3>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 2556–3000</div>
+      <h3>Physical Sovereignty Declared</h3>
+      <p>The geothermal grid reaches full capacity. The food sovereignty audit, now in its third iteration, shows the federation producing 94% of its caloric needs domestically, with the remaining 6% concentrated in specialty goods (not staples) that represent genuine trade rather than dependency. Water systems — upgraded through the regenerative agriculture transition, which reduced agricultural water consumption by 30% — are sufficient for the current population with margin for a 25% population increase.</p>
+      <p>The federation issues a formal declaration of physical sovereignty — not a triumphalist announcement but a measured accounting: here are the layers we have built, here are the metrics we use to verify them, here are the independent auditors who have confirmed the measurements, and here are the layers still under construction. The declaration is designed to be a document that can be examined by skeptics, not a press release designed to be believed by supporters.</p>
+    </div>
+
+    <div class="timeline-block">
+      <div class="timeline-label">Days 3000–3650</div>
+      <h3>The Accommodation Phase</h3>
+      <p>As described in Chapter 7, the attack sequence that great powers run against a successful sovereign node ends, eventually, in accommodation. The accommodation does not look like celebration. It looks like a series of bilateral negotiations in which the great powers quietly adjust their posture: trade agreements that treat the federation as a peer rather than a client, diplomatic language that no longer implies the federation's sovereignty is provisional, investment proposals that accept the federation's constitutional restrictions on foreign ownership rather than demanding exemptions from them.</p>
+      <p>The accommodation happens not because the great powers have changed their values but because the leverage calculation has changed. Sanctions did not produce the economic collapse that would have made the population demand a return to dependency, because the stack was sufficiently advanced to absorb the pressure. Proxy destabilization did not fracture the federation, because the cognitive immune system identified and named the operations before they reached terminal velocity. And the federation now controls resources — geothermal expertise, rare mineral access, Indian Ocean logistics — that the great powers need.</p>
+    </div>
+
+    <div class="callout gold">
+      <div class="callout-label">Day 3650 — What Has Been Built</div>
+      <p>Physical layer: ~85% complete. Energy independent. Food substantially sovereign. Water secure. Military deterrence operational through asymmetric capacity plus mutual defense treaty with three other sovereign-aligned nodes. Institutional layer: cryptographic governance architecture fully operational, two successful leadership successions completed. Cognitive layer: Tier One immune system mature, Tier Two generational program in its seventh year, first cohort of fully-trained citizens entering positions of influence. Knowledge commons: four-node active commons producing genuine shared research. Financial layer: domestic financial rails operational, 60% of trade conducted in the federation's unit of account or bilateral agreements with other sovereign nodes.</p>
+    </div>
+
+    <h2>What the Transition <em>Reveals About the Framework</em></h2>
+
+    <p>Running the transition path against a specific archetype reveals several things that the abstract framework obscures.</p>
+
+    <p><strong>The middle years are the crisis.</strong> The framework's greatest vulnerability is not the founding phase — where motivation is highest and external pressure is lower than it will be later — and it is not the mature phase where the stack can defend itself. It is years four through seven, when the old dependencies have been reduced enough to trigger maximum external pressure but the new stack is not yet resilient enough to absorb it without political cost. The founding coalition must be designed to survive this window explicitly, not just in general.</p>
+
+    <p><strong>Succession is the proof.</strong> Every institutional design claims to survive leadership transitions. The first actual leadership transition is the moment of truth. Designing the governance architecture to make the first succession as public and as demonstrably non-traumatic as possible — even at the cost of some operational efficiency — is worth more than any single policy achievement.</p>
+
+    <p><strong>The cognitive immune system earns its cost many times over.</strong> Every crisis in this archetype was defended by it. The three thousand founding cohort members are the highest-leverage investment in the entire stack. Their training cost is trivial compared to the cost of any one of the crises they help the federation survive.</p>
+
+    <p><strong>The knowledge commons is not charity.</strong> The moment the federation has something genuinely worth sharing — geothermal expertise, agricultural soil restoration methods, governance documentation from the succession process — the commons becomes reciprocal. The nodes that receive the most from the commons early are also those most motivated to build something worth contributing. The commons works because of asymmetric expertise, not because of idealism.</p>
+
+    <div class="chapter-nav">
+      <a href="13-responses.html">
+        <div class="nav-dir">← Previous</div>
+        <div class="nav-title">Responses to Hard Problems</div>
+      </a>
+      <a href="15-redteam.html" class="next">
+        <div class="nav-dir">Next →</div>
+        <div class="nav-title">Red-Team — Breaking the Institutional Layer</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>The Sovereign Stack Framework</p>
+  <p><a href="index.html">Return to Overview</a></p>
+</footer>
+
+</body>
+</html>
