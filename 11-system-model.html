@@ -228,12 +228,13 @@
     <div class="primitive-block">
       <div class="primitive-name">Primitive 01 — Identity</div>
       <div class="primitive-schema">Identity {
-  id:         string           // globally unique, immutable
-  pubkey:     bytes            // hardware-bound signing key
-  claims:     Claim[]          // verifiable credentials: citizenship, role, clearance
-  lifecycle:  { issued, expires, revoked_at, successor }
+  domain_id:    bytes            // pairwise: KDF(master_secret, domain_context)
+  pubkey:       bytes            // hardware-bound signing key, domain-scoped
+  claims:       Claim[]          // verifiable credentials: citizenship, role, clearance
+  lifecycle:    { issued, expires, revoked_at, successor }
+  // cross-domain linkage requires explicit DataFlowPolicy authorization
 }</div>
-      <p>Identity is not a username. It is a cryptographic binding between a real actor and a verifiable set of claims. Every action in the system is attributed to an Identity. An Identity whose lifecycle has expired or been revoked cannot initiate actions. Identity without a hardware-bound key is spoofable; spoofable identity is not identity.</p>
+      <p>Identity is not a username. It is a cryptographic binding between a real actor and a verifiable set of claims, scoped to the domain of interaction. The <code>domain_id</code> is derived per-domain: the same actor presents a different, unlinkable identifier in each context. Cross-domain correlation — linking the same person's activity across domains — requires explicit <code>DataFlowPolicy</code> authorization and is recorded in the audit log. A global reusable identifier is a surveillance primitive; the sovereign system does not issue them. Identity without a hardware-bound key is spoofable; spoofable identity is not identity.</p>
     </div>
 
     <div class="primitive-block">
@@ -286,6 +287,19 @@
       <p>The Audit Log is the sovereign system's memory. It is append-only, cryptographically chained, and publicly verifiable by any citizen. Every access, every denial, every policy change, every key rotation is recorded. An audit log that can be modified by any actor — including system administrators — is not an audit log. It is a narrative controlled by whoever holds write access.</p>
     </div>
 
+    <div class="primitive-block">
+      <div class="primitive-name">Primitive 06 — DataFlowPolicy</div>
+      <div class="primitive-schema">DataFlowPolicy {
+  source_domain:     string         // originating identity or data domain
+  target_domain:     string         // destination domain
+  permitted_fields:  string[]       // fields authorized to cross the boundary
+  correlation_mode:  enum           // prohibited | explicit | quorum_required
+  authorized_by:     Identity[]     // who approved this cross-domain flow
+  expiry:            uint64         // time-bounded; no perpetual cross-domain grants
+}</div>
+      <p>Composability is the primary amplifier of control. Individually safe components — identity, behavioral data, inference outputs — become a total visibility system when joined without constraint. The <code>DataFlowPolicy</code> primitive is the system's answer to this: every cross-domain data join requires an explicit, authorized, time-bounded policy that names what fields may cross which boundaries and under what conditions. Unlisted joins are structurally prohibited at the pipeline boundary. No policy, no join. The sovereign system does not assume composability is safe — it requires composability to be proven safe at each instance.</p>
+    </div>
+
     <h2>The Four Enforcement <em>Points</em></h2>
 
     <p>Sovereignty does not live in the primitives. It lives in the points where the primitives are evaluated and decisions are made. There are exactly four boundaries where enforcement is meaningful:</p>
@@ -301,6 +315,62 @@
 
     <h3>Output Boundary</h3>
     <p>The point where results leave the sovereign system. Outputs are classified by inheriting the classification of their highest-classified input, unless explicitly declassified. Every output leaving the system boundary is logged with the full Execution Context that produced it. Outputs destined for external parties carry the sovereign node's cryptographic signature, establishing provenance and enabling downstream systems to verify that the output has not been tampered with after leaving the boundary.</p>
+
+    <h2>The Convergence <em>Constraint</em></h2>
+
+    <p>The most dangerous failure mode in a sovereign system is not external attack. It is the quiet convergence of three roles under a single authority: identity issuance, policy authorship, and enforcement. When one actor controls all three, the system is totalitarian in the structural sense — not as a policy outcome but as an architectural one. The enforcement points described above are only meaningful if no single actor can simultaneously control who has an identity, what the policies say, and whether policies are applied.</p>
+
+    <p>The convergence constraint mandates cryptographic separation of these roles. The separation is not procedural — it cannot be enforced by policy alone, because whoever controls the policy layer can override any policy, including policies about role separation. The separation must be enforced cryptographically: distinct key sets, held by different people selected through different mechanisms, with no MPC ceremony defined for cross-role operations.</p>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Role 01 — Identity Authority</div>
+      <div class="primitive-schema">IdentityAuthority {
+  key_set:    MPC_KeySet         // distributed across independent holders
+  can:        [ issue_credentials, revoke_credentials, rotate_keys ]
+  cannot:     [ author_policy, version_policy, operate_enforcement_runtime ]
+  quorum:     threshold_t_of_n   // requires t of n keyholders to act
+}</div>
+      <p>Issues and revokes verifiable credentials. Holds no policy-writing capability and cannot operate the enforcement runtime. Holders of Identity Authority keys are structurally prohibited — not just procedurally prohibited — from also holding Policy or Enforcement keys. The selection mechanism for key holders must be independent of the mechanisms for the other two roles.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Role 02 — Policy Authority</div>
+      <div class="primitive-schema">PolicyAuthority {
+  key_set:    MPC_KeySet         // different holders than IdentityAuthority
+  can:        [ author_policy, version_policy, deprecate_policy ]
+  cannot:     [ issue_credentials, revoke_credentials, operate_enforcement_runtime ]
+  quorum:     threshold_t_of_n   // quorum set cannot overlap with other role sets
+}</div>
+      <p>Authors, versions, and deprecates policy. Cannot determine who holds an identity and cannot operate the enforcement runtime. Policy changes require quorum of this key set. The quorum holders are selected by a mechanism independent of how Identity Authority and Enforcement key holders are selected — preventing a single political process from staffing all three roles simultaneously.</p>
+    </div>
+
+    <div class="primitive-block">
+      <div class="primitive-name">Role 03 — Enforcement Runtime</div>
+      <div class="primitive-schema">EnforcementRuntime {
+  key_set:    MPC_KeySet         // different holders than both above
+  can:        [ evaluate_policy, execute_lifecycle, write_audit_entry ]
+  cannot:     [ issue_credentials, author_policy, modify_audit_entry ]
+  quorum:     threshold_t_of_n
+}</div>
+      <p>Evaluates policy at all four enforcement boundaries and writes to the audit log. Cannot issue identities, cannot author policy, and — critically — cannot modify the audit entries it writes. A runtime that can erase its own decisions is not an enforcement runtime; it is a cover story. The append-only audit log enforces this: the Enforcement Runtime has write-new-entry access only, never modify-existing-entry access.</p>
+    </div>
+
+    <div class="callout accent">
+      <div class="callout-label">Why Structural Separation Cannot Be Procedural</div>
+      <p>A policy that says "Role X cannot do Y" can be changed by whoever controls the Policy Authority. A law that says the same can be repealed by whoever controls the legislature. Procedural separation is always one captured actor away from collapse. The convergence constraint is enforced at the cryptographic level: the three key sets do not share holders, and the system defines no operation that requires all three key sets to sign together. There is no "emergency override" ceremony. There is no "root access" credential that bypasses role separation. Any system that includes such a mechanism has not implemented the convergence constraint — it has documented a plan to eventually violate it.</p>
+    </div>
+
+    <h3>Model Constraints</h3>
+
+    <p>Inference systems — models that observe identity, behavior, and resource access to produce decisions or recommendations — occupy a special position in the sovereignty architecture. An uncontrolled model is a fourth convergence point: it can synthesize information across the three separated roles without any of the role-separation constraints applying to its outputs. The governance model is only as strong as its weakest inference boundary.</p>
+
+    <p>Every inference system operating on system data must satisfy three constraints:</p>
+
+    <p><strong>Scope declaration.</strong> At instantiation, every model declares its input scope — which resource types, which identity fields, which behavioral signals it is permitted to consume. This declaration is a policy artifact, versioned and audited. A model cannot observe inputs outside its declared scope; the pipeline boundary enforces this before execution begins.</p>
+
+    <p><strong>Lineage inheritance.</strong> Model outputs inherit the classification of their highest-classified input. An inference result derived from identity data and behavioral logs cannot be treated as less sensitive than either of those inputs. Declassification requires explicit policy authorization and produces an audit entry.</p>
+
+    <p><strong>Cross-domain prohibition.</strong> A model cannot simultaneously access identity primitives and behavioral data across domains without an explicit <code>DataFlowPolicy</code> authorizing that combination. The prohibition on simultaneous access prevents models from becoming the implicit join layer that the convergence constraint is designed to prevent. Inference that combines who someone is with everything they have done is a total visibility instrument, regardless of whether any single access was permitted.</p>
 
     <h2>The Request <em>Lifecycle</em></h2>
 
@@ -377,12 +447,12 @@
       </div>
       <div class="sys-layer">
         <div class="sl-name">Identity Layer</div>
-        <div class="sl-desc">DID-based sovereign identity, hardware-bound keys, verifiable credentials, lifecycle management, revocation registry.</div>
+        <div class="sl-desc">Pairwise domain-scoped identifiers, hardware-bound keys, verifiable credentials, lifecycle management, revocation registry. No global identifiers issued.</div>
         <div class="sl-map">→ Institutional Architecture</div>
       </div>
       <div class="sys-layer">
         <div class="sl-name">Policy Layer</div>
-        <div class="sl-desc">Policy-as-code runtime (OPA-class), MPC-enforced for sovereign-classified operations, version-controlled, publicly auditable policy corpus.</div>
+        <div class="sl-desc">Policy-as-code runtime (OPA-class), MPC-enforced for sovereign-classified operations, version-controlled, publicly auditable policy corpus. Policy Authority key set is cryptographically distinct from Identity Authority and Enforcement Runtime key sets.</div>
         <div class="sl-map">→ Institutional + Cognitive</div>
       </div>
       <div class="sys-layer">
@@ -453,11 +523,11 @@
 
     <h2>What Makes a System <em>Sovereign</em></h2>
 
-    <p>A system is sovereign over a domain when: (1) it can make and enforce decisions within that domain without requiring permission from any external actor; (2) those decisions are made according to policies set by the population the system serves, not by the system's builders or operators; and (3) the audit log that records every decision is accessible to every citizen and cannot be modified by any actor, including the system's administrators.</p>
+    <p>A system is sovereign over a domain when: (1) it can make and enforce decisions within that domain without requiring permission from any external actor; (2) those decisions are made according to policies set by the population the system serves, not by the system's builders or operators; (3) the audit log that records every decision is accessible to every citizen and cannot be modified by any actor, including the system's administrators; and (4) no single actor can simultaneously control identity issuance, policy authorship, and enforcement — the three roles are cryptographically separated and independently governed.</p>
 
-    <p>Condition 1 requires infrastructure sovereignty: the enforcement points run on hardware the sovereign node controls. Condition 2 requires institutional sovereignty: policy changes require MPC authorization from distributed key holders. Condition 3 requires audit sovereignty: the log is public, append-only, and cryptographically chained.</p>
+    <p>Condition 1 requires infrastructure sovereignty: the enforcement points run on hardware the sovereign node controls, portable across providers without data exposure. Condition 2 requires institutional sovereignty: policy changes require MPC authorization from distributed key holders who do not overlap with identity or enforcement key holders. Condition 3 requires audit sovereignty: the log is public, append-only, and cryptographically chained, writable only by the Enforcement Runtime and unmodifiable by anyone. Condition 4 requires convergence resistance: the Identity Authority, Policy Authority, and Enforcement Runtime are held by distinct key sets selected through independent mechanisms.</p>
 
-    <p>These three conditions are the minimum viable specification for a sovereign system. They are also the three conditions most commonly compromised in systems that describe themselves as sovereign. A system that meets condition 1 but not condition 2 is an autocrat's fortress. A system that meets conditions 1 and 2 but not condition 3 is a governance system without accountability. All three conditions must hold simultaneously.</p>
+    <p>These four conditions are the minimum viable specification for a sovereign system. A system that meets condition 1 but not condition 2 is an autocrat's fortress. A system that meets conditions 1 and 2 but not condition 3 is a governance system without accountability. A system that meets conditions 1 through 3 but not condition 4 is a system waiting for the moment when one actor becomes powerful enough to unify all three roles — at which point conditions 1 through 3 become instruments of total control rather than guarantees of sovereignty. All four conditions must hold simultaneously.</p>
 
     <div class="chapter-nav">
       <a href="10-implementation.html">
